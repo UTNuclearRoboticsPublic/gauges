@@ -30,7 +30,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "QtSource/qcgaugewidget.h"
+#include "qcgaugewidget.h"
 
 namespace Ui {
 class MainWindow;

@@ -62,7 +62,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mSpeedNeedle->setValueRange(0,80);
     mSpeedGauge->addBackground(7);
     mSpeedGauge->addGlass(88);
-    ui->verticalLayout->addWidget(mSpeedGauge);
+    ui->horizontalLayout->addWidget(mSpeedGauge); // Qt4 apparently doesn't have verticalLayout?
+    //ui->verticalLayout->addWidget(mSpeedGauge);
 
 
 }
