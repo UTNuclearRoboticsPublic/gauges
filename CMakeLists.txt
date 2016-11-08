@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(gauges)
 
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS roscpp std_msgs
+)
+
 #############################
 # Qt Stuff
 # See: https://wiki.qt.io/Using_CMake_build_system
@@ -24,7 +34,7 @@ set ( UIS
 find_package( Qt4 REQUIRED )
 include( ${QT_USE_FILE} )
 add_definitions( ${QT_DEFINITIONS} )
-include_directories( ${CMAKE_BINARY_DIR} include )
+include_directories( ${CMAKE_BINARY_DIR} include ${catkin_INCLUDE_DIRS} )
 
 
 # Next, using precompiler, compiler and linker
@@ -38,5 +48,5 @@ QT4_WRAP_CPP( MOC_SRCS ${MOC_HEADERS} )
 add_executable( gauges ${SOURCES} ${MOC_SRCS} ${RES_SOURCES} ${UI_HEADERS} )
 
 # build it (link libraries)
-target_link_libraries( gauges ${QT_LIBRARIES} )
+target_link_libraries( gauges ${QT_LIBRARIES} ${catkin_LIBRARIES} )
 
