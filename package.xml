@@ -2,7 +2,7 @@
 <package>
   <name>gauges</name>
   <version>1.0.0</version>
-  <description>Define and launch analog-looking gauges for ROS topics.</description>
+  <description>Launch virtual gauges for ROS topics.</description>
 
   <author email="andyz@utexas.edu">alexvs</author>
 

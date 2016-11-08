@@ -78,8 +78,3 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-void MainWindow::on_horizontalSlider_valueChanged(int value)
-{
-    mSpeedNeedle->setCurrentValue(value);
-}

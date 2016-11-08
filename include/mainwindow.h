@@ -47,9 +47,6 @@ public:
     ~MainWindow();
     QcNeedleItem *mSpeedNeedle;
 
-private slots:
-    void on_horizontalSlider_valueChanged(int value);
-
 private:
     Ui::MainWindow *ui;
 

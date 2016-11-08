@@ -15,23 +15,6 @@
 #include <QtCore>
 #include <QString>
 
-/*
-#include <QtCore/QVariant>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
-#include <QtWidgets/QSlider>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
-#include <QtWidgets/QWidget>
-*/
-
-
 QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow
@@ -40,7 +23,6 @@ public:
     QWidget *centralWidget;
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
-    QSlider *horizontalSlider;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -61,12 +43,6 @@ public:
         horizontalLayout->setObjectName(QString("horizontalLayout"));
 
         gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
-
-        horizontalSlider = new QSlider(centralWidget);
-        horizontalSlider->setObjectName(QString("horizontalSlider"));
-        horizontalSlider->setOrientation(Qt::Horizontal);
-
-        gridLayout->addWidget(horizontalSlider, 1, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
