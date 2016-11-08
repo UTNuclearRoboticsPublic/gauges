@@ -31,6 +31,8 @@
 
 #include <QMainWindow>
 #include "qcgaugewidget.h"
+#include <ros/ros.h>
+#include <std_msgs/Float64.h>
 
 namespace Ui {
 class MainWindow;
@@ -41,8 +43,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0, ros::NodeHandle* nh = 0);
     ~MainWindow();
+    QcNeedleItem *mSpeedNeedle;
 
 private slots:
     void on_horizontalSlider_valueChanged(int value);
@@ -51,7 +54,6 @@ private:
     Ui::MainWindow *ui;
 
     QcGaugeWidget * mSpeedGauge;
-    QcNeedleItem *mSpeedNeedle;
 };
 
 #endif // MAINWINDOW_H

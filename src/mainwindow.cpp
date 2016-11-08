@@ -29,10 +29,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent, ros::NodeHandle* nh) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
-{
+{ 
     ui->setupUi(this);
 
     mSpeedGauge = new QcGaugeWidget;
@@ -47,25 +47,31 @@ MainWindow::MainWindow(QWidget *parent) :
     bkg2->addColor(0.1,Qt::gray);
     bkg2->addColor(1.0,Qt::darkGray);
 
-    mSpeedGauge->addArc(55);
-    mSpeedGauge->addDegrees(65)->setValueRange(0,80);
-    mSpeedGauge->addColorBand(50);
-
-    mSpeedGauge->addValues(80)->setValueRange(0,80);
-
-    mSpeedGauge->addLabel(70)->setText("Km/h");
+    // Range of the indicator
+    int minimum;
+    nh->getParam("minimum", minimum);
+    int maximum;
+    nh->getParam("maximum", maximum);
+    //mSpeedGauge->addArc(55);
+    mSpeedGauge->addDegrees(65)->setValueRange(minimum,maximum);
+    //mSpeedGauge->addColorBand(50);
+    mSpeedGauge->addValues(80)->setValueRange(minimum,maximum);
+    
+    // Gauge label
+    std::string gaugeName;
+    nh->getParam("gauge_name", gaugeName);
+    mSpeedGauge->addLabel(70)->setText(gaugeName.c_str());
+    
+    // The needle
     QcLabelItem *lab = mSpeedGauge->addLabel(40);
     lab->setText("0");
     mSpeedNeedle = mSpeedGauge->addNeedle(60);
     mSpeedNeedle->setLabel(lab);
-    mSpeedNeedle->setColor(Qt::white);
-    mSpeedNeedle->setValueRange(0,80);
+    mSpeedNeedle->setColor(Qt::black);
+    mSpeedNeedle->setValueRange(minimum,maximum);
     mSpeedGauge->addBackground(7);
     mSpeedGauge->addGlass(88);
-    ui->horizontalLayout->addWidget(mSpeedGauge); // Qt4 apparently doesn't have verticalLayout?
-    //ui->verticalLayout->addWidget(mSpeedGauge);
-
-
+    ui->horizontalLayout->addWidget(mSpeedGauge);
 }
 
 MainWindow::~MainWindow()
