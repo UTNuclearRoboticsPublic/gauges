@@ -38,6 +38,11 @@ include( ${QT_USE_FILE} )
 add_definitions( ${QT_DEFINITIONS} )
 include_directories( ${CMAKE_BINARY_DIR} include ${catkin_INCLUDE_DIRS} )
 
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ui)
+file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} resources/*.qrc)
+file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp)
+
 
 # Next, using precompiler, compiler and linker
 
@@ -46,11 +51,13 @@ QT4_ADD_RESOURCES( RES_SOURCES ${RESOURCES} )
 QT4_WRAP_UI( UI_HEADERS ${UIS} )
 QT4_WRAP_CPP( MOC_SRCS ${MOC_HEADERS} )
 
-# compile
-add_executable( gauges ${SOURCES} ${MOC_SRCS} ${RES_SOURCES} ${UI_HEADERS} )
+file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp)
 
-# build it (link libraries)
-target_link_libraries( gauges ${QT_LIBRARIES} ${catkin_LIBRARIES} )
+# compile
+add_executable( gauges ${QT_SOURCES} ${SOURCES} ${MOC_SRCS} ${RES_SOURCES} ${UI_HEADERS} )
+
+# link libraries
+target_link_libraries( gauges ${QT_LIBRARIES} ${ROS_LIBRARIES} ${catkin_LIBRARIES} )
 
 # For installing the debian
 install(TARGETS ${PROJECT_NAME}
