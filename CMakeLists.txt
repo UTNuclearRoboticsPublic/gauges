@@ -53,3 +53,21 @@ add_executable( gauges ${SOURCES} ${MOC_SRCS} ${RES_SOURCES} ${UI_HEADERS} )
 # build it (link libraries)
 target_link_libraries( gauges ${QT_LIBRARIES} ${catkin_LIBRARIES} )
 
+# For installing the debian
+install(TARGETS ${PROJECT_NAME}
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+# Install the cpp header files
+install(DIRECTORY include/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN ".svn" EXCLUDE
+)
+
+# Install the launch files
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+)
