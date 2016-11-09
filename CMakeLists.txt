@@ -36,12 +36,11 @@ set ( UIS
 find_package( Qt4 REQUIRED )
 include( ${QT_USE_FILE} )
 add_definitions( ${QT_DEFINITIONS} )
-include_directories( ${CMAKE_BINARY_DIR} include ${catkin_INCLUDE_DIRS} )
+include_directories( ${CMAKE_BINARY_DIR} include ${catkin_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} )
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ui)
 file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} resources/*.qrc)
-file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.hpp)
+file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.h)
 
 
 # Next, using precompiler, compiler and linker
@@ -70,7 +69,6 @@ install(TARGETS ${PROJECT_NAME}
 install(DIRECTORY include/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
-  PATTERN ".svn" EXCLUDE
 )
 
 # Install the launch files
