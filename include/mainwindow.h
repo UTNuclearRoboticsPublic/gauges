@@ -29,10 +29,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#ifndef Q_MOC_RUN // MOC doesn't parse boost correctly. See https://bugreports.qt.io/browse/QTBUG-22829
+
 #include <QMainWindow>
 #include "qcgaugewidget.h"
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>
+
+#endif //Q_MOC_RUN
 
 namespace Ui {
 class MainWindow;
