@@ -29,11 +29,11 @@
 #include "mainwindow.h"
 
 #ifndef Q_MOC_RUN // MOC doesnt' parse boost correctly. See https://bugreports.qt.io/browse/QTBUG-22829
-    #include <QMessageBox>
-    #include <QtGui>
-    #include <QtCore>
-    #include <QString>
-#endif
+
+#include <QMessageBox>
+#include <QtGui>
+#include <QtCore>
+#include <QString>
 
 QT_BEGIN_NAMESPACE
 
@@ -144,3 +144,4 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+#endif
