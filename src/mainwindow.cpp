@@ -28,15 +28,12 @@
 
 #include "mainwindow.h"
 
-
-//////////////////////////////////////////////////
-// Pasting the contents of ui_mainwindow.h here,
-// since it was causing Travis build failues
-//////////////////////////////////////////////////
-#include <QMessageBox>
-#include <QtGui>
-#include <QtCore>
-#include <QString>
+#ifndef Q_MOC_RUN // MOC doesnt' parse boost correctly. See https://bugreports.qt.io/browse/QTBUG-22829
+    #include <QMessageBox>
+    #include <QtGui>
+    #include <QtCore>
+    #include <QString>
+#endif
 
 QT_BEGIN_NAMESPACE
 
