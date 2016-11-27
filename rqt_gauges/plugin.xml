@@ -1,0 +1,15 @@
+<library path="lib/librqt_gauges">
+  <class name="rqt_gauges" type="rqt_gauges.rqt_gauges.rqt_gauges" base_class_type="rqt_gui_cpp::Plugin">
+    <description>
+      Virtual gauges for ROS topics.
+    </description>
+    <qtgui>
+      <group>
+        <label>Visualization</label>
+        <statustip>Plugins related to visualization.</statustip>
+      </group>
+      <label>Gauges</label>
+      <statustip>Virtual gauges for ROS topics.</statustip>
+    </qtgui>
+  </class>
+</library>
