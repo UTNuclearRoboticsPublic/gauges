@@ -1,5 +1,5 @@
 <library path="lib/librqt_gauges">
-  <class name="rqt_gauges/MainWindow" type="rqt_gauges::MainWindow" base_class_type="rqt_gui_cpp::Plugin">
+  <class name="rqt_gauges/MyPlugin" type="rqt_gauges::MyPlugin" base_class_type="rqt_gui_cpp::Plugin">
     <description>
       Virtual gauges for ROS topics.
     </description>
