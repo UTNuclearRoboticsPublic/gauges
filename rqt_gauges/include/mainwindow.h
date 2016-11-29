@@ -29,6 +29,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <rqt_gui_cpp/plugin.h>
 #include <QMainWindow>
 #include "qcgaugewidget.h"
 #include <ros/ros.h>
