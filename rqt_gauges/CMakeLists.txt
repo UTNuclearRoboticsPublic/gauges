@@ -69,6 +69,16 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+## The library that defines the Qt stuff
+add_library(qcgaugewidget SHARED src/qcgaugewidget.cpp)
+
+## Specify libraries to link a library or executable target against
+target_link_libraries(qcgaugewidget
+  ${catkin_LIBRARIES}
+  ${QT_QTCORE_LIBRARY}
+  ${QT_QTGUI_LIBRARY}
+)
+
 ## Declare a cpp library
 add_library(${PROJECT_NAME}
     ${mainwindow_cpp_SRCS}
@@ -78,6 +88,7 @@ add_library(${PROJECT_NAME}
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
+  qcgaugewidget
   ${catkin_LIBRARIES}
   ${QT_QTCORE_LIBRARY}
   ${QT_QTGUI_LIBRARY}
