@@ -27,10 +27,12 @@
 ****************************************************************************/
 
 #include "mainwindow.h"
+#include <pluginlib/class_list_macros.h>
 #include <QMessageBox>
 #include <QtGui>
 #include <QtCore>
 #include <QString>
+#include <QStringList>
 
 QT_BEGIN_NAMESPACE
 
