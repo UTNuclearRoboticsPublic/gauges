@@ -88,7 +88,7 @@ public:
 };
 
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
+    class MainWindow: public rqt_gui_cpp::Plugin {};
 } // namespace Ui
 
 QT_END_NAMESPACE
@@ -143,3 +143,5 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+PLUGINLIB_DECLARE_CLASS(rqt_gauges, MainWindow, Ui::MainWindow, rqt_gui_cpp::Plugin)
