@@ -46,20 +46,27 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
   bkg2->addColor(0.1,Qt::gray);
   bkg2->addColor(1.0,Qt::darkGray);
 
-  // Range of the indicator
-  int minimum = 0;
-  //nh->getParam("minimum", minimum);
-  int maximum = 100;
-  //nh->getParam("maximum", maximum);
-  //mSpeedGauge->addArc(55);
-  mSpeedGauge_->addDegrees(65)->setValueRange(minimum,maximum);
-  //mSpeedGauge->addColorBand(50);
-  mSpeedGauge_->addValues(80)->setValueRange(minimum,maximum);
+  // Set default parameters for the gauge. These can be overwritten.
+  // See http://wiki.ros.org/Parameter%20Server
+  getNodeHandle().setParam("gauge_name", "Roll");
+  getNodeHandle().setParam("minimum", 0);
+  getNodeHandle().setParam("maximum", 100);
+  getNodeHandle().setParam("danger_threshold", 50);
 
   // Gauge label
-  std::string gaugeName = "Roll";
-  //nh->getParam("gauge_name", gaugeName);
+  std::string gaugeName;
+  getNodeHandle().getParam("gauge_name", gaugeName);
   mSpeedGauge_->addLabel(70)->setText(gaugeName.c_str());
+
+  // Range of the indicator
+  int minimum = 0;
+  //getNodeHandle().getParam("minimum", minimum);
+  int maximum = 100;
+  //getNodeHandle().getParam("maximum", maximum);
+  //mSpeedGauge->addArc(55);
+  mSpeedGauge_->addDegrees(65)->setValueRange(minimum, maximum);
+  //mSpeedGauge->addColorBand(50);
+  mSpeedGauge_->addValues(80)->setValueRange(minimum, maximum);
 
   // The needle
   QcLabelItem *lab = mSpeedGauge_->addLabel(40);
@@ -71,13 +78,15 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
   mSpeedGauge_->addBackground(7);
   mSpeedGauge_->addGlass(88);
 
+  // Color band. Red starts at "danger_threshold"
+  double threshold = 0.;
+  getNodeHandle().getParam("danger_threshold", threshold);
+  mSpeedGauge_->addColorBand(threshold);
+
   // add widget to the user interface
   context.addWidget(widget_);
 
-  //ros::NodeHandle nh;
-  //rqt_gauges::nhPtr = &nh;
-  needleSub_ = getNodeHandle().subscribe ("roll", 1, &rqt_gauges::MyPlugin::newDataCallback, this);
-  //rqt_gauges::needleSubPtr = &rqt_gauges::needleSub;
+  needleSub_ = getNodeHandle().subscribe ("/roll", 1, &rqt_gauges::MyPlugin::newDataCallback, this);
 }
 
 void MyPlugin::shutdownPlugin()

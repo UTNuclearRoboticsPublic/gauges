@@ -137,6 +137,7 @@ MainWindow::MainWindow(QWidget *parent, ros::NodeHandle* nh) :
     mSpeedNeedle->setValueRange(minimum,maximum);
     mSpeedGauge->addBackground(7);
     mSpeedGauge->addGlass(88);
+
     ui->horizontalLayout->addWidget(mSpeedGauge);
 }
 
