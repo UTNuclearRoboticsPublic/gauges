@@ -118,6 +118,7 @@ set (rqt_gauges_SRCS
 
 set(rqt_gauges_HDRS
   include/rqt_gauges/my_plugin.h
+  include/rqt_gauges/qcgaugewidget.h
 )
 
 set(rqt_gauges_UIS

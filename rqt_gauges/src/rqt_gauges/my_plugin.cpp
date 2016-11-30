@@ -21,9 +21,15 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
   // access standalone command line arguments
   QStringList argv = context.argv();
   // create QWidget
-  widget_ = new QWidget();
+  mSpeedGauge_ = new QcGaugeWidget();
+  //widget_ = new QWidget();
+  widget_ = mSpeedGauge_;
   // extend the widget with all attributes and children from UI file
   ui_.setupUi(widget_);
+
+  // Set up the gauge
+  mSpeedGauge_->addBackground(99);
+
   // add widget to the user interface
   context.addWidget(widget_);
 }
