@@ -31,10 +31,20 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
   // extend the widget with all attributes and children from UI file
   ui_.setupUi(widget_);
 
+  // Set default parameters for the gauge. These can be overwritten.
+  // See http://wiki.ros.org/Parameter%20Server
+  getNodeHandle().setParam("topic", "/roll");
+  getNodeHandle().setParam("gauge_name", "Roll");
+  getNodeHandle().setParam("minimum", 0);
+  getNodeHandle().setParam("maximum", 100);
+  getNodeHandle().setParam("danger_threshold", 50);
+  getNodeHandle().setParam("pixel_size", 150);
+
   // Set up the gauge
-  const int gaugeSize = 150;
-  mSpeedGauge_->setFixedHeight(gaugeSize);
-  mSpeedGauge_->setFixedWidth(gaugeSize);
+  int gauge_size = 150;
+  getNodeHandle().getParam("pixel_size", gauge_size);
+  mSpeedGauge_->setFixedHeight(gauge_size);
+  mSpeedGauge_->setFixedWidth(gauge_size);
   mSpeedGauge_->addBackground(99);
   QcBackgroundItem *bkg1 = mSpeedGauge_->addBackground(92);
   bkg1->clearrColors();
@@ -45,13 +55,6 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
   bkg2->clearrColors();
   bkg2->addColor(0.1,Qt::gray);
   bkg2->addColor(1.0,Qt::darkGray);
-
-  // Set default parameters for the gauge. These can be overwritten.
-  // See http://wiki.ros.org/Parameter%20Server
-  getNodeHandle().setParam("gauge_name", "Roll");
-  getNodeHandle().setParam("minimum", 0);
-  getNodeHandle().setParam("maximum", 100);
-  getNodeHandle().setParam("danger_threshold", 50);
 
   // Gauge label
   std::string gaugeName;
@@ -86,7 +89,10 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
   // add widget to the user interface
   context.addWidget(widget_);
 
-  needleSub_ = getNodeHandle().subscribe ("/roll", 1, &rqt_gauges::MyPlugin::newDataCallback, this);
+  // Subscribe to new data
+  std::string topicName;
+  getNodeHandle().getParam("topic", topicName);
+  needleSub_ = getNodeHandle().subscribe (topicName, 1, &rqt_gauges::MyPlugin::newDataCallback, this);
 }
 
 void MyPlugin::shutdownPlugin()
