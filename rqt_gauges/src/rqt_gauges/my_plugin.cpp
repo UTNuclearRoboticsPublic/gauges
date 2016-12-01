@@ -3,6 +3,8 @@
 #include <QStringList>
 #include <rqt_gauges/my_plugin.h>
 #include <rqt_gauges/qcgaugewidget.h>
+#include <stdlib.h>
+#include <sstream>
 
 namespace rqt_gauges {
 
@@ -18,31 +20,53 @@ MyPlugin::MyPlugin()
   , widget_(0)
 {
   // give QObjects reasonable names
-  setObjectName("MyPlugin");
+  setObjectName("Gauge");
 }
 
 void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
 {
   // access standalone command line arguments
-  QStringList argv = context.argv();
+  //QStringList argv = context.argv();
+
   // create QWidget
   mSpeedGauge_ = new QcGaugeWidget();
   widget_ = mSpeedGauge_; // This works because mSpeedGauge is inherited from a QWidget class, I guess
   // extend the widget with all attributes and children from UI file
   ui_.setupUi(widget_);
 
-  // Set default parameters for the gauge. These can be overwritten.
+  // Window title
+  widget_->setWindowTitle("Gauge[*]");
+  if (context.serialNumber() != 1)
+  {
+    widget_->setWindowTitle(widget_->windowTitle() + " (" + QString::number(context.serialNumber()) + ")");
+  }
+
+  // Set default parameters for the gauge. To customize, these can be overwritten.
   // See http://wiki.ros.org/Parameter%20Server
-  getNodeHandle().setParam("topic", "/roll");
-  getNodeHandle().setParam("gauge_name", "Roll");
-  getNodeHandle().setParam("minimum", 0);
-  getNodeHandle().setParam("maximum", 100);
-  getNodeHandle().setParam("danger_threshold", 50);
-  getNodeHandle().setParam("pixel_size", 150);
+  // The parameters are numbered so multiple gauges can be launched.
+
+  std::string gaugeNum;
+  std::stringstream out;
+  out << context.serialNumber();
+  gaugeNum = out.str();
+
+  // Set each parameter if it isn't defined already
+  if (!getNodeHandle().hasParam("topic"+gaugeNum))
+    getNodeHandle().setParam("topic"+gaugeNum, "/roll");
+  if (!getNodeHandle().hasParam("gauge_name"+gaugeNum))
+    getNodeHandle().setParam("gauge_name"+gaugeNum, "Roll");
+  if (!getNodeHandle().hasParam("minimum"+gaugeNum))
+    getNodeHandle().setParam("minimum"+gaugeNum, 0);
+  if (!getNodeHandle().hasParam("maximum"+gaugeNum))
+    getNodeHandle().setParam("maximum"+gaugeNum, 100);
+  if (!getNodeHandle().hasParam("danger_threshold"+gaugeNum))
+    getNodeHandle().setParam("danger_threshold"+gaugeNum, 50);
+  if (! getNodeHandle().hasParam("pixel_size"+gaugeNum))
+    getNodeHandle().setParam("pixel_size"+gaugeNum, 200); // width and height
 
   // Set up the gauge
   int gauge_size = 150;
-  getNodeHandle().getParam("pixel_size", gauge_size);
+  getNodeHandle().getParam("pixel_size"+gaugeNum, gauge_size);
   mSpeedGauge_->setFixedHeight(gauge_size);
   mSpeedGauge_->setFixedWidth(gauge_size);
   mSpeedGauge_->addBackground(99);
@@ -58,14 +82,14 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
 
   // Gauge label
   std::string gaugeName;
-  getNodeHandle().getParam("gauge_name", gaugeName);
+  getNodeHandle().getParam("gauge_name"+gaugeNum, gaugeName);
   mSpeedGauge_->addLabel(70)->setText(gaugeName.c_str());
 
   // Range of the indicator
   int minimum = 0;
-  //getNodeHandle().getParam("minimum", minimum);
+  getNodeHandle().getParam("minimum"+gaugeNum, minimum);
   int maximum = 100;
-  //getNodeHandle().getParam("maximum", maximum);
+  getNodeHandle().getParam("maximum"+gaugeNum, maximum);
   //mSpeedGauge->addArc(55);
   mSpeedGauge_->addDegrees(65)->setValueRange(minimum, maximum);
   //mSpeedGauge->addColorBand(50);
@@ -83,7 +107,7 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
 
   // Color band. Red starts at "danger_threshold"
   double threshold = 0.;
-  getNodeHandle().getParam("danger_threshold", threshold);
+  getNodeHandle().getParam("danger_threshold"+gaugeNum, threshold);
   mSpeedGauge_->addColorBand(threshold);
 
   // add widget to the user interface
@@ -91,7 +115,7 @@ void MyPlugin::initPlugin(qt_gui_cpp::PluginContext& context)
 
   // Subscribe to new data
   std::string topicName;
-  getNodeHandle().getParam("topic", topicName);
+  getNodeHandle().getParam("topic"+gaugeNum, topicName);
   needleSub_ = getNodeHandle().subscribe (topicName, 1, &rqt_gauges::MyPlugin::newDataCallback, this);
 }
 

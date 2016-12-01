@@ -26,7 +26,7 @@ public:
   // bool hasConfiguration() const;
   // void triggerConfiguration();
 private:
-  Ui::MyPluginWidget ui_;
+  Ui::Gauge ui_;
   QWidget* widget_;
   QcGaugeWidget* mSpeedGauge_;
   QcNeedleItem *mSpeedNeedle_;
