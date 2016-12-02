@@ -16,8 +16,6 @@ find_package(Qt4 COMPONENTS QtCore QtGUi REQUIRED)
 
 include(${QT_USE_FILE})
 
-catkin_python_setup()
-
 roslint_cpp()
 
 ###################################
@@ -25,12 +23,12 @@ roslint_cpp()
 ###################################
 
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp rqt_gui_cpp std_msgs
+  CATKIN_DEPENDS roscpp rqt_gui rqt_gui_cpp std_msgs
 #  DEPENDS system_lib
 )
-
+catkin_python_setup()
 
 set (rqt_gauges_SRCS
   src/rqt_gauges/my_plugin.cpp
@@ -99,7 +97,10 @@ install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(DIRECTORY include/
+install(PROGRAMS scripts/${PROJECT_NAME}/gauge_script.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY include/${PROJECT_NAME}
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
 )
