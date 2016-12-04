@@ -6,7 +6,6 @@ project(rqt_gauges)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  roslint
   rqt_gui
   rqt_gui_cpp
   std_msgs
@@ -14,21 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Qt4 COMPONENTS QtCore QtGUi REQUIRED)
 
-include(${QT_USE_FILE})
-
-roslint_cpp()
-
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp rqt_gui rqt_gui_cpp std_msgs
-#  DEPENDS system_lib
-)
-catkin_python_setup()
+####################
+## Lists of Qt files
+####################
 
 set (rqt_gauges_SRCS
   src/rqt_gauges/my_plugin.cpp
@@ -43,6 +30,29 @@ set(rqt_gauges_UIS
   src/rqt_gauges/my_plugin.ui
 )
 
+set(rqt_gauges_INCLUDE_DIRECTORIES
+  include
+  ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+
+include(${QT_USE_FILE})
+
+###################################
+## catkin specific configuration ##
+###################################
+
+catkin_package(
+  INCLUDE_DIRS include ${rqt_gauges_INCLUDE_DIRECTORIES}
+  LIBRARIES ${PROJECT_NAME}
+  CATKIN_DEPENDS roscpp rqt_gui rqt_gui_cpp std_msgs
+#  DEPENDS system_lib
+)
+
+##############
+## Qt wrapping
+##############
+
 qt4_wrap_cpp(rqt_gauges_MOCS ${rqt_gauges_HDRS})
 qt4_wrap_ui(rqt_gauges_UIS_H ${rqt_gauges_UIS})
 
@@ -56,6 +66,7 @@ include_directories(
   include
   ${CMAKE_CURRENT_BINARY_DIR}/..
   ${catkin_INCLUDE_DIRS}
+  ${rqt_gauges_INCLUDE_DIRECTORIES}
 )
 
 ## The library that defines the Qt stuff
@@ -101,6 +112,6 @@ install(PROGRAMS scripts/${PROJECT_NAME}/gauge_script.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(DIRECTORY include/${PROJECT_NAME}
+install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
