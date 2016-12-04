@@ -11,8 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
-find_package(Qt4 COMPONENTS QtCore QtGUi REQUIRED)
-
 ####################
 ## Lists of Qt files
 ####################
