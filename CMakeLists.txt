@@ -53,8 +53,19 @@ catkin_package(
 ## Qt wrapping
 ##############
 
-qt4_wrap_cpp(rqt_gauges_MOCS ${rqt_gauges_HDRS})
-qt4_wrap_ui(rqt_gauges_UIS_H ${rqt_gauges_UIS})
+
+if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
+  find_package(Qt5Widgets REQUIRED)
+  qt5_wrap_cpp(rqt_gauges_MOCS ${rqt_gauges_HDRS})
+  qt5_wrap_ui(rqt_gauges_UIS_H ${rqt_gauges_UIS})
+  set(qt_LIBRARIES Qt5::Widgets)
+else()
+  find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
+  include(${QT_USE_FILE})
+  qt4_wrap_cpp(rqt_gauges_MOCS ${rqt_gauges_HDRS})
+  qt4_wrap_ui(rqt_gauges_UIS_H ${rqt_gauges_UIS})
+  set(qt_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
+endif()
 
 ###########
 ## Build ##
@@ -75,8 +86,7 @@ add_library(qcgaugewidget SHARED src/rqt_gauges/qcgaugewidget.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(qcgaugewidget
   ${catkin_LIBRARIES}
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTGUI_LIBRARY}
+  ${qt_LIBRARIES}
 )
 
 ## Declare a cpp library
@@ -90,8 +100,7 @@ add_library(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
   qcgaugewidget
   ${catkin_LIBRARIES}
-  ${QT_QTCORE_LIBRARY}
-  ${QT_QTGUI_LIBRARY}
+  ${qt_LIBRARIES}
 )
 
 #############
