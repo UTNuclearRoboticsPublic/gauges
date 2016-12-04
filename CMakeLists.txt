@@ -33,9 +33,6 @@ set(rqt_gauges_INCLUDE_DIRECTORIES
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-
-include(${QT_USE_FILE})
-
 ###################################
 ## catkin specific configuration ##
 ###################################
