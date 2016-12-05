@@ -11,6 +11,17 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
+###################################
+## catkin specific configuration ##
+###################################
+
+catkin_package(
+  INCLUDE_DIRS include ${rqt_gauges_INCLUDE_DIRECTORIES}
+  LIBRARIES ${PROJECT_NAME}
+  CATKIN_DEPENDS roscpp rqt_gui rqt_gui_cpp std_msgs
+#  DEPENDS system_lib
+)
+
 ####################
 ## Lists of Qt files
 ####################
@@ -31,17 +42,6 @@ set(rqt_gauges_UIS
 set(rqt_gauges_INCLUDE_DIRECTORIES
   include
   ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-###################################
-## catkin specific configuration ##
-###################################
-
-catkin_package(
-  INCLUDE_DIRS include ${rqt_gauges_INCLUDE_DIRECTORIES}
-  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp rqt_gui rqt_gui_cpp std_msgs
-#  DEPENDS system_lib
 )
 
 ##############
@@ -109,7 +109,6 @@ install(FILES plugin.xml
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 install(PROGRAMS scripts/${PROJECT_NAME}/gauge_script.py
