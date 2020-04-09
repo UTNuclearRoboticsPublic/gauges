@@ -30,13 +30,16 @@ set (rqt_gauges_SRCS
   src/rqt_gauges/my_plugin.cpp
 )
 
+# Don't need this plugin's header to export
+# the generic qcgaugewidget library
 set(rqt_qcgauge_HDRS
   include/rqt_gauges/qcgaugewidget.h
 )
 
+# For compiling our plugin, only need the my_plugin header,
+# since we'll link to `qcgaugewidget`
 set(rqt_gauges_HDRS
   include/rqt_gauges/my_plugin.h
-  include/rqt_gauges/qcgaugewidget.h
 )
 
 set(rqt_gauges_UIS
