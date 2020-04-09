@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
   INCLUDE_DIRS include ${rqt_gauges_INCLUDE_DIRECTORIES}
-  LIBRARIES ${PROJECT_NAME}
+  LIBRARIES ${PROJECT_NAME} qcgaugewidget
   CATKIN_DEPENDS roscpp rqt_gui rqt_gui_cpp std_msgs
 #  DEPENDS system_lib
 )
@@ -28,6 +28,10 @@ catkin_package(
 
 set (rqt_gauges_SRCS
   src/rqt_gauges/my_plugin.cpp
+)
+
+set(rqt_qcgauge_HDRS
+  include/rqt_gauges/qcgaugewidget.h
 )
 
 set(rqt_gauges_HDRS
@@ -51,12 +55,14 @@ set(rqt_gauges_INCLUDE_DIRECTORIES
 
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
   find_package(Qt5Widgets REQUIRED)
+  qt5_wrap_cpp(rqt_qcgauge_MOCS ${rqt_qcgauge_HDRS})
   qt5_wrap_cpp(rqt_gauges_MOCS ${rqt_gauges_HDRS})
   qt5_wrap_ui(rqt_gauges_UIS_H ${rqt_gauges_UIS})
   set(qt_LIBRARIES Qt5::Widgets)
 else()
   find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
   include(${QT_USE_FILE})
+  qt4_wrap_cpp(rqt_qcgauge_MOCS ${rqt_qcgauge_HDRS})
   qt4_wrap_cpp(rqt_gauges_MOCS ${rqt_gauges_HDRS})
   qt4_wrap_ui(rqt_gauges_UIS_H ${rqt_gauges_UIS})
   set(qt_LIBRARIES ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
@@ -76,7 +82,10 @@ include_directories(
 )
 
 ## The library that defines the Qt stuff
-add_library(qcgaugewidget SHARED src/rqt_gauges/qcgaugewidget.cpp)
+add_library(qcgaugewidget SHARED
+  src/rqt_gauges/qcgaugewidget.cpp
+  ${rqt_qcgauge_MOCS}
+  )
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(qcgaugewidget
